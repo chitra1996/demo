@@ -7,42 +7,38 @@
 
 "use strict";
 
-const locals = require('../../config/local.js');
-
 module.exports = {
     index: (req, res) => {
-        if (req.session.authhenticated === true) {
+        if (req.session.authenticated === true) {
             res.redirect('/home');
-            res.demo.online = true;
-            console.log(demo.online);
         } else {
             res.view('home/login');
         }
     },
 
     home: (req, res) => {
-        if (req.session.authhenticated === true) {
+        if (req.session.authenticated === true) {
             res.view('home/index');
+            setTimeout(() => {Socket.events()}, 5000);
         } else {
             res.redirect('/');
         }
     },
 
     login: (req, res) => {
-        console.log(req.body.username, req.body.password);
         if (req.body.username && req.body.password) {
             User.findOne({
                 username: req.body.username,
                 password: req.body.password
             }).exec((error, result) => {
-                console.log(error, result);
                 if (error) {
                     res.view('500')
                 } else if (!result) {
                     res.view('403')
                 } else {
-                    req.session.authhenticated = true;
-                    res.view('home/index')
+                    req.session.authenticated = true;
+                    req.session.username = req.body.username;
+                    res.redirect('/home');
                 }
             });
         } else {
@@ -63,8 +59,8 @@ module.exports = {
             age: req.body.age,
             password: req.body.password
         }).exec(function(err, newUser) {
-            console.log(err);
             if (err) {
+                console.log(err);
                 res.serverError();
             } else {
                 res.redirect('/');
@@ -72,12 +68,8 @@ module.exports = {
         });
     },
     userlogin: (req,res) => {
-        if (req.isSocket && req.session.authhenticated) {
-            req.body.online = true;
-            sails.sockets.join(req.socket, req.session.username);
-            res.send({
-                success: true
-            });
+        if (req.isSocket && req.session.authenticated) {
+            Socket.join(req,res);
         } else {
             res.status(400).send({
                 success: false

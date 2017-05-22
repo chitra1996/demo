@@ -9,10 +9,12 @@ module.exports = {
             res.json({
                 message: req.session.username + " is online"
             });
-            sails.socket.addRoomMembersToRooms("user" + req.session.username, "users");
+            sails.sockets.addRoomMembersToRooms("user" + req.session.username, "users");
         });
     },
-    reload: function() {
-        sails.socket.broadcast("users", "reload");
+
+    events: function() {
+        console.log("Firing event");
+        sails.sockets.broadcast("users", {username: 11});
     }
 };

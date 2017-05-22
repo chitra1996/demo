@@ -4,10 +4,7 @@ socket.on('connect', function() {
         console.log(data);
     });
 });
-/*
-socket.on('reload', function(data) {
 
-    var dt = $('#datatable').datatable();
-    dt.ajax.reload(null,false);
-})
-*/
+socket.on('message', function(data) {
+    console.log(data);
+});
