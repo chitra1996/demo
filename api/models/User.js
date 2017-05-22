@@ -12,22 +12,26 @@ module.exports = {
     autoCreatedAt: false,
     autoPK: false,
     attributes: {
-      username: {
-        type: "string",
-        required: true
-      },
+        username: {
+            type: "string",
+            required: true
+        },
 
-      password: {
-        type: "string",
-        required: true
-      },
-      age: {
-        type: "integer",
-        required: "false"
-      },
-      email: {
-          type: "string",
-          required: false
-      }
+        password: {
+            type: "string",
+            required: true
+        },
+        age: {
+            type: "integer",
+            required: "false"
+        },
+        email: {
+            type: "string",
+            required: false
+        },
+        online: {
+            type: "boolean",
+            defaultsTo: false
+        }
     }
 };
