@@ -19,7 +19,7 @@ module.exports = {
     home: (req, res) => {
         if (req.session.authenticated === true) {
             res.view('home/index');
-            setTimeout(() => {Socket.events()}, 5000);
+            Socket.events(req)
         } else {
             res.redirect('/');
         }
@@ -47,6 +47,7 @@ module.exports = {
     },
 
     logout: (req, res) => {
+        Socket.loggingOut(req);
         req.session.destroy(function() {
             res.redirect('/');
         });
@@ -67,9 +68,9 @@ module.exports = {
             }
         });
     },
-    userlogin: (req,res) => {
+    userlogin: (req, res) => {
         if (req.isSocket && req.session.authenticated) {
-            Socket.join(req,res);
+            Socket.join(req, res);
         } else {
             res.status(400).send({
                 success: false

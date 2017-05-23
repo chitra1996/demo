@@ -1,5 +1,9 @@
 module.exports = {
+
     join: function(req, res) {
+
+        //console.log("user " + req.session.username);
+
         sails.sockets.join(req.socket, "user" + req.session.username, function(err) {
             if (err) {
                 return res.status(200).json({
@@ -13,8 +17,19 @@ module.exports = {
         });
     },
 
-    events: function() {
-        console.log("Firing event");
-        sails.sockets.broadcast("users", {username: 11});
+    events: function(req) {
+        console.log("Firing event...");
+        console.log("user " + req.session.username);
+        sails.sockets.broadcast("users", "online", {
+            onlineUser: req.session.username
+        }, "req.socket");
+    },
+
+    loggingOut: function(req) {
+        var onUser = req.session.username;
+        console.log(onUser + " logging out...");
+        sails.sockets.broadcast("users", "logOut" ,{
+            loggedOut: onUser + " logged out"
+        }, "req.socket");
     }
 };
