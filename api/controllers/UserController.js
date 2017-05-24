@@ -19,7 +19,7 @@ module.exports = {
     home: (req, res) => {
         if (req.session.authenticated === true) {
             res.view('home/index');
-            Socket.events(req)
+            Socket.loginEvent(req);
         } else {
             res.redirect('/');
         }
@@ -38,6 +38,7 @@ module.exports = {
                 } else {
                     req.session.authenticated = true;
                     req.session.username = req.body.username;
+                    SELECT online\ FROM demo WHERE username = req.session.username
                     res.redirect('/home');
                 }
             });

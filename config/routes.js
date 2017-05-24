@@ -31,7 +31,6 @@ module.exports.routes = {
      * `assets` directory)                                                      *
      *                                                                          *
      ***************************************************************************/
-
     "/": "UserController.index",
     "/home": "UserController.home",
     "POST /login": "UserController.login",
@@ -40,7 +39,7 @@ module.exports.routes = {
     "GET /signup": {
         view: 'home/signup'
     },
-    "GET /api/user/join": "UserController.userlogin"
+    "GET /api/user/join": "UserController.userlogin",
     /***************************************************************************
      *                                                                          *
      * Custom routes here...                                                    *

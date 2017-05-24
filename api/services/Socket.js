@@ -1,9 +1,5 @@
 module.exports = {
-
     join: function(req, res) {
-
-        //console.log("user " + req.session.username);
-
         sails.sockets.join(req.socket, "user" + req.session.username, function(err) {
             if (err) {
                 return res.status(200).json({
@@ -17,11 +13,12 @@ module.exports = {
         });
     },
 
-    events: function(req) {
-        console.log("Firing event...");
+    loginEvent: function(req) {
+        sails.sockets.removeRoomMembersFromRooms("users", "user" + req.session.username);
         sails.sockets.broadcast("users", "online", {
             message: req.session.username
-        }, req.socket.username);
+        });
+        sails.sockets.addRoomMembersToRooms("user" + req.session.username, "users");
     },
 
     loggingOut: function(req) {
