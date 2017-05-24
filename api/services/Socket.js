@@ -19,17 +19,15 @@ module.exports = {
 
     events: function(req) {
         console.log("Firing event...");
-        console.log("user " + req.session.username);
         sails.sockets.broadcast("users", "online", {
-            onlineUser: req.session.username
-        }, "req.socket");
+            message: req.session.username
+        }, req.socket.username);
     },
 
     loggingOut: function(req) {
-        var onUser = req.session.username;
-        console.log(onUser + " logging out...");
-        sails.sockets.broadcast("users", "logOut" ,{
-            loggedOut: onUser + " logged out"
-        }, "req.socket");
+        console.log(req.session.username + " logging out...");
+        sails.sockets.broadcast("users", "offline", {
+            message: req.session.username
+        });
     }
 };

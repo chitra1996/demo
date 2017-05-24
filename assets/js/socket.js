@@ -6,15 +6,16 @@ socket.on('connect', function() {
     });
 });
 
-socket.on('online', function(data) {
-    var onUser = data.onlineUser;
-    console.log(onUser);
-    var tr = $('#onlineUsers tbody').append('<tr><td><a>' + onUser + '</a></td></tr>');
-    tr.setAttribute("id", onUser, 0);
+socket.on("online", function(data) {
+    console.log(data.message + "is online");
+    var tr = $('#onlineUsers tbody').append('<tr><td><a>' + data.message + '</a></td></tr>');
+    online_user = data.message;
+    console.log(online_user);
+    $('#onlineUsers tbody tr').attr("id", online_user);
 });
 
-socket.on("logOut", function(data) {
-    var onUser = data.username;
-    console.log(onUser + " removed from table...");
-    $('#onlineUsers tbody tr td').closest($onUser).remove();
+socket.on("offline", function(data) {
+    console.log(data.message + " removed from table...");
+    var id = data.message;
+    $('#' + id).hide();
 });
